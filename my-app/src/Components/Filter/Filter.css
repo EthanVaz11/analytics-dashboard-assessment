@@ -1,0 +1,26 @@
+/* src/components/Filter/Filter.css */
+.filter {
+    display: flex;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  
+  input {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #2ecc71;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  button:hover {
+    background-color: #27ae60;
+  }
+  

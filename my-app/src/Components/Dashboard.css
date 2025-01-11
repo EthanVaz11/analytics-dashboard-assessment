@@ -1,0 +1,119 @@
+/* src/components/Dashboard/Dashboard.css */
+
+.dashboard {
+    padding: 20px;
+    background-color: #f4f6f9;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Header styles */
+  .dashboard h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    font-size: 2rem;
+  }
+  
+  /* Layout for the main content */
+  .dashboard .charts-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .dashboard .charts-container .chart {
+    width: 48%;
+    height: 350px;
+  }
+  
+  /* Container for the summary cards */
+  .dashboard .summary-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .dashboard .summary-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    width: 23%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dashboard .summary-card h3 {
+    color: #34495e;
+    font-size: 1.2rem;
+  }
+  
+  .dashboard .summary-card p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+  }
+  
+  /* Filter section styles */
+  .dashboard .filter-container {
+    margin-bottom: 20px;
+  }
+  
+  .dashboard .filter-container select {
+    padding: 10px;
+    margin: 5px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .dashboard .filter-container label {
+    font-size: 1rem;
+    margin-right: 10px;
+    color: #34495e;
+  }
+  
+  /* Data Table Styles */
+  .dashboard .data-table-container {
+    margin-top: 20px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dashboard .data-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .dashboard .data-table-container th,
+  .dashboard .data-table-container td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .dashboard .data-table-container th {
+    background-color: #2c3e50;
+    color: white;
+  }
+  
+  .dashboard .data-table-container tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .dashboard .data-table-container tr:hover {
+    background-color: #ecf0f1;
+  }
+  
+  /* LazyLoader styles (optional if you want a loading spinner) */
+  .dashboard .lazy-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .dashboard .lazy-loader img {
+    width: 50px;
+    height: 50px;
+  }
+  

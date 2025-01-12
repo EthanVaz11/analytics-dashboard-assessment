@@ -18,6 +18,7 @@ const BarChart = ({ data }) => {
     return acc;
   }, {});
 
+
   const chartData = {
     labels: Object.keys(makeCounts),
     datasets: [

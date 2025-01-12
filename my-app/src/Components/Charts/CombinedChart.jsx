@@ -46,6 +46,8 @@ const CombinedChart = ({ data, selectedMake }) => {
     ],
   };
 
+  console.log("Bar Chart", data)
+  
   // Pie chart data: CAFV eligibility for the selected make
   const filteredData = data.filter((item) => item.make === selectedMake);
   const cafvCounts = filteredData.reduce((acc, item) => {

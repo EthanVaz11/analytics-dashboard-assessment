@@ -105,7 +105,7 @@ const Dashboard = () => {
       {/* Heatmap Section */}
       <div className="heatmap-container">
         <h3>County Heatmap</h3>
-        <HeatmapMap geoJsonData={geoJson} />
+        <HeatmapMap filteredData={filteredData}  geoJsonData={geoJson} />
         {console.log("geoJson Heat Map", geoJson)}
       </div>
 

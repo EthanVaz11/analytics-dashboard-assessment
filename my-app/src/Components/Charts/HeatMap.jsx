@@ -2,16 +2,28 @@ import React, { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-const HeatmapMap = ({ geoJsonData }) => {
-  
+const HeatmapMap = ({ geoJsonData, filteredData }) => {
   const mapRef = useRef(null);
 
-  useEffect(() => {
-    console.log("GeoJSON", geoJsonData); // Inspect this to ensure it's valid
-  }, [geoJsonData]);
+  // Utility function to group by county and count occurrences
+  const groupByCounty = (data) => {
+    return data.reduce((acc, item) => {
+      const county = item.county; // Assuming 'county' is the property name
+      if (county) {
+        acc[county] = (acc[county] || 0) + 1; // Increment the count
+      }
+      return acc;
+    }, {});
+  };
+
+  const getColorByFrequency = (frequency) => {
+    const maxFrequency = 10; // Adjust this based on your data's highest frequency
+    const opacity = Math.min(1, frequency / maxFrequency); // Scale opacity between 0 and 1
+    return `rgba(255, 0, 0, ${opacity})`; // Red color with varying opacity
+  };
   
+
   useEffect(() => {
-    
     if (!mapRef.current) {
       const baseLayer = L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
@@ -32,39 +44,36 @@ const HeatmapMap = ({ geoJsonData }) => {
       }
     });
 
-    const getRandomColor = () => {
-      const letters = "0123456789ABCDEF";
-      let color = "#";
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    };
-
-    console.log("HEATMAPGEOOOJSONN", geoJsonData);
+    // Process filtered data to calculate county frequencies
+    const countyFrequency = groupByCounty(filteredData);
 
     // Add the GeoJSON data to the map
     if (geoJsonData) {
       const geoJsonLayer = L.geoJSON(geoJsonData, {
-        style: () => ({
-          color: getRandomColor(), // Set the line/polygon color
-          weight: 2,
-          opacity: 0.6,
-        }),
+        style: (feature) => {
+          const countyName = feature.properties.NAME; // Assuming 'NAME' contains the county name
+          const frequency = countyFrequency[countyName] || 0; // Get frequency or default to 0
+          return {
+            color: "#000000", // Border color
+            fillColor: getColorByFrequency(frequency), // Adjusted by frequency
+            weight: 1,
+            fillOpacity: 0.7, // Adjust opacity for heatmap effect
+          };
+        },
         onEachFeature: (feature, layer) => {
           if (feature.properties && feature.properties.NAME) {
             // Bind a popup to each feature with its properties
             layer.bindPopup(
-              Object.entries(feature.properties)
-                .map(([key, value]) => `<b>${key}</b>: ${value}`)
-                .join("<br>")
+              `<b>County:</b> ${feature.properties.NAME}<br><b>Vehicles:</b> ${
+                countyFrequency[feature.properties.NAME] || 0
+              }`
             );
 
             // Add a bold label for county name
             layer.bindTooltip(feature.properties.NAME, {
               permanent: true,
-              direction: 'center',
-              className: 'county-label-bold', // Custom CSS class for styling
+              direction: "center",
+              className: "county-label-bold", // Custom CSS class for styling
             });
           }
         },
@@ -79,7 +88,7 @@ const HeatmapMap = ({ geoJsonData }) => {
         mapRef.current = null;
       }
     };
-  }, [geoJsonData]);
+  }, [geoJsonData, filteredData]);
 
   return <div id="map-canvas" style={{ width: "100%", height: "500px", marginTop: "20px" }} />;
 };

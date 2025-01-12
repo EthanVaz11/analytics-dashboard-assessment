@@ -98,7 +98,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <h1>Electric Vehicles Dashboard</h1>
+      <h1>Electric Vehicles Dashboard </h1>
       <Filter options={filterOptions} onChange={handleFilterChange} />
       <SummaryCards data={filteredData} />
 

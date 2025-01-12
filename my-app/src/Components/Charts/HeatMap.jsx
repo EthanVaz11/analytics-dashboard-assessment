@@ -32,13 +32,22 @@ const HeatmapMap = ({ geoJsonData }) => {
       }
     });
 
+    const getRandomColor = () => {
+      const letters = "0123456789ABCDEF";
+      let color = "#";
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    };
+
     console.log("HEATMAPGEOOOJSONN", geoJsonData);
 
     // Add the GeoJSON data to the map
     if (geoJsonData) {
       const geoJsonLayer = L.geoJSON(geoJsonData, {
         style: () => ({
-          color: "blue", // Set the line/polygon color
+          color: getRandomColor(), // Set the line/polygon color
           weight: 2,
           opacity: 0.6,
         }),

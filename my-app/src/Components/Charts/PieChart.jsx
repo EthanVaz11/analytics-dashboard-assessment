@@ -1,52 +1,37 @@
-import React, { useRef, useEffect } from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale } from 'chart.js';
+import React from 'react';
+import { Pie } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+} from 'chart.js';
 
-// Register required components for the chart
-ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale);
+// Register Chart.js components
+ChartJS.register(ArcElement, Tooltip, Legend, BarElement, CategoryScale, LinearScale);
+
 
 const PieChart = ({ data }) => {
-  const chartRef = useRef(null);
-  let chartInstance = null;
+  const makeCounts = data.reduce((acc, item) => {
+    acc[item.make] = (acc[item.make] || 0) + 1;
+    return acc;
+  }, {});
 
-  useEffect(() => {
-    if (chartRef.current) {
-      // Destroy the previous chart before creating a new one
-      if (chartInstance) {
-        chartInstance.destroy();
-      }
+  const chartData = {
+    labels: Object.keys(makeCounts),
+    datasets: [
+      {
+        data: Object.values(makeCounts),
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8E44AD', '#3498DB'],
+        hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8E44AD', '#3498DB'],
+      },
+    ],
+  };
 
-      chartInstance = new ChartJS(chartRef.current, {
-        type: 'pie',
-        data: {
-          labels: data.labels,
-          datasets: [
-            {
-              data: data.values,
-              backgroundColor: ['#FF5733', '#33FF57', '#3357FF'], // Custom colors
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: (context) => `${context.label}: ${context.raw}`,
-              },
-            },
-          },
-        },
-      });
-    }
-
-    return () => {
-      if (chartInstance) {
-        chartInstance.destroy();
-      }
-    };
-  }, [data]);
-
-  return <canvas ref={chartRef}></canvas>;
+  return <Pie data={chartData} />;
 };
 
 export default PieChart;

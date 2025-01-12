@@ -1,36 +1,56 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
-
-// Register necessary components
-ChartJS.register(
+import {
+  Chart as ChartJS,
+  BarElement,
   CategoryScale,
   LinearScale,
-  BarElement,
-  Title,
   Tooltip,
-  Legend
-);
+  Legend,
+} from 'chart.js';
+
+// Register Chart.js components
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const BarChart = ({ data }) => {
-  const counts = data.reduce((acc, item) => {
-    const state = item.State; // Assuming `State` is the key you want to count occurrences of
-    acc[state] = (acc[state] || 0) + 1;
+  const makeCounts = data.reduce((acc, item) => {
+    acc[item.make] = (acc[item.make] || 0) + 1;
     return acc;
   }, {});
 
   const chartData = {
-    labels: Object.keys(counts),
+    labels: Object.keys(makeCounts),
     datasets: [
       {
-        label: 'Number of Vehicles',
-        data: Object.values(counts),
-        backgroundColor: '#3498db', // Color for the bars
+        label: 'Number of Cars',
+        data: Object.values(makeCounts),
+        backgroundColor: '#3498DB',
+        borderColor: '#2980B9',
+        borderWidth: 1,
       },
     ],
   };
 
-  return <Bar data={chartData} />;
+  const options = {
+    indexAxis: 'y', // Horizontal bar chart
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      tooltip: {
+        enabled: true,
+      },
+    },
+    scales: {
+      x: {
+        beginAtZero: true,
+      },
+    },
+  };
+
+  return <Bar data={chartData} options={options} />;
 };
 
 export default BarChart;

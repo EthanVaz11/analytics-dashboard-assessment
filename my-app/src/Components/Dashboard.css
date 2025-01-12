@@ -15,11 +15,11 @@
   }
   
   /* Layout for the main content */
-  .dashboard .charts-container {
+  /* .dashboard .charts-container {
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
-  }
+  } */
   
   .dashboard .charts-container .chart {
     width: 48%;

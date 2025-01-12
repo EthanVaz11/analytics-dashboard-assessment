@@ -102,10 +102,12 @@ const CombinedChart = ({ data, selectedMake }) => {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
       {/* Bar Chart */}
-      <div style={{ width: '100%', margin: '10px' }}>
-        <h3>Bar Chart</h3>
-        <Bar data={barChartData} options={barOptions} />
-      </div>
+      {!selectedMake && (
+        <div style={{ width: '100%', margin: '10px' }}>
+          <h3>Bar Chart</h3>
+          <Bar data={barChartData} options={barOptions} />
+        </div>
+      )}
 
       {/* Pie Chart: Show only if a make is selected */}
       {selectedMake && (

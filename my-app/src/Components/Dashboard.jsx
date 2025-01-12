@@ -17,7 +17,6 @@ const Dashboard = () => {
   const [selectedMake, setSelectedMake] = useState(null); // Track the selected make
   const [geoJson, setGeoJson] = useState(null);
 
-
   const [filterOptions, setFilterOptions] = useState({
     states: [],
     cities: [],
@@ -25,17 +24,15 @@ const Dashboard = () => {
     models: [],
   });
 
-
   const fetchGeoJson = async () => {
     const response = await fetch('/data/washington-state-counties_.geojson');
     const data = await response.json();
     setGeoJson(data);
   };
-  
+
   useEffect(() => {
     fetchGeoJson();
   }, []);
-  
 
   useEffect(() => {
     const fetchCSV = async () => {
@@ -49,7 +46,6 @@ const Dashboard = () => {
         transformHeader: (header) => header.trim().toLowerCase().replace(/[\s\W]+/g, '_'),
         complete: (result) => {
           const allData = result.data;
-          
           const processedData = allData.map((item) => {
             const location = item.vehicle_location;
             if (location) {
@@ -98,21 +94,23 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <h1>Electric Vehicles Dashboard </h1>
+      <h1>Electric Vehicles Dashboard</h1>
       <Filter options={filterOptions} onChange={handleFilterChange} />
-      <SummaryCards data={filteredData} />
+      
+      <div className="dashboard-content">
+        <SummaryCards data={filteredData} />
 
-      {/* Heatmap Section */}
-      <div className="heatmap-container">
-        <h3>County Heatmap</h3>
-        <HeatmapMap filteredData={filteredData}  geoJsonData={geoJson} />
-        {console.log("geoJson Heat Map", geoJson)}
-      </div>
+        <div className="heatmap-container">
+          <h3>County Heatmap</h3>
+          <HeatmapMap filteredData={filteredData} geoJsonData={geoJson} />
+        </div>
 
-      <div className="charts-container">
-        <CombinedChart data={filteredData} selectedMake={selectedMake} />
+        <div className="charts-container">
+          <CombinedChart data={filteredData} selectedMake={selectedMake} />
+        </div>
+
+        <DataTable data={filteredData} />
       </div>
-      <DataTable data={filteredData} />
     </div>
   );
 };

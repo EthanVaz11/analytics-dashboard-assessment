@@ -15,6 +15,8 @@ const Dashboard = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedMake, setSelectedMake] = useState(null); // Track the selected make
+  const [geoJson, setGeoJson] = useState(null);
+
 
   const [filterOptions, setFilterOptions] = useState({
     states: [],
@@ -22,6 +24,18 @@ const Dashboard = () => {
     makes: [],
     models: [],
   });
+
+
+  const fetchGeoJson = async () => {
+    const response = await fetch('/data/washington-state-counties_.geojson');
+    const data = await response.json();
+    setGeoJson(data);
+  };
+  
+  useEffect(() => {
+    fetchGeoJson();
+  }, []);
+  
 
   useEffect(() => {
     const fetchCSV = async () => {
@@ -91,7 +105,8 @@ const Dashboard = () => {
       {/* Heatmap Section */}
       <div className="heatmap-container">
         <h3>County Heatmap</h3>
-        <HeatmapMap data={filteredData} />
+        <HeatmapMap geoJsonData={geoJson} />
+        {console.log("geoJson Heat Map", geoJson)}
       </div>
 
       <div className="charts-container">

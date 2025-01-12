@@ -2,22 +2,16 @@ import React, { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// Simple hash function to generate a unique color for each make
-const generateColor = (make) => {
-  let hash = 0;
-  for (let i = 0; i < make.length; i++) {
-    hash = make.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  // Create a color from the hash value by turning the hash into a hex color code
-  const color = `#${((hash >> 24) & 0xff).toString(16)}${((hash >> 16) & 0xff).toString(16)}${((hash >> 8) & 0xff).toString(16)}`;
-  return color;
-};
-
-const HeatmapMap = ({ data }) => {
+const HeatmapMap = ({ geoJsonData }) => {
+  
   const mapRef = useRef(null);
-  const makeColorMap = useRef({}); // Store make-color mappings persistently
 
   useEffect(() => {
+    console.log("GeoJSON", geoJsonData); // Inspect this to ensure it's valid
+  }, [geoJsonData]);
+  
+  useEffect(() => {
+    
     if (!mapRef.current) {
       const baseLayer = L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
@@ -31,37 +25,44 @@ const HeatmapMap = ({ data }) => {
       });
     }
 
-    // Clear previous markers before re-adding
+    // Clear previous GeoJSON layers before adding new ones
     mapRef.current.eachLayer((layer) => {
-      if (layer instanceof L.CircleMarker) {
+      if (layer instanceof L.GeoJSON) {
         mapRef.current.removeLayer(layer);
       }
     });
 
-    data.forEach((item) => {
-      if (item.latitude && item.longitude) {
-        // Generate a unique color for each make, only if it hasn't been generated before
-        if (!makeColorMap.current[item.make]) {
-          makeColorMap.current[item.make] = generateColor(item.make);
-        }
+    console.log("HEATMAPGEOOOJSONN", geoJsonData);
 
-        const color = makeColorMap.current[item.make];
+    // Add the GeoJSON data to the map
+    if (geoJsonData) {
+      const geoJsonLayer = L.geoJSON(geoJsonData, {
+        style: () => ({
+          color: "blue", // Set the line/polygon color
+          weight: 2,
+          opacity: 0.6,
+        }),
+        onEachFeature: (feature, layer) => {
+          if (feature.properties && feature.properties.NAME) {
+            // Bind a popup to each feature with its properties
+            layer.bindPopup(
+              Object.entries(feature.properties)
+                .map(([key, value]) => `<b>${key}</b>: ${value}`)
+                .join("<br>")
+            );
 
-        const markerOptions = {
-          radius: 10,
-          fillOpacity: 0.3,
-          stroke: true,
-          weight: 1,
-          color: color,
-        };
+            // Add a bold label for county name
+            layer.bindTooltip(feature.properties.NAME, {
+              permanent: true,
+              direction: 'center',
+              className: 'county-label-bold', // Custom CSS class for styling
+            });
+          }
+        },
+      });
 
-        L.circleMarker([item.latitude, item.longitude], markerOptions)
-          .bindPopup(
-            `<b>${item.make}</b><br>County: ${item.county}<br>Vehicles: ${item.count}`
-          )
-          .addTo(mapRef.current);
-      }
-    });
+      geoJsonLayer.addTo(mapRef.current);
+    }
 
     return () => {
       if (mapRef.current) {
@@ -69,7 +70,7 @@ const HeatmapMap = ({ data }) => {
         mapRef.current = null;
       }
     };
-  }, [data]);
+  }, [geoJsonData]);
 
   return <div id="map-canvas" style={{ width: "100%", height: "500px", marginTop: "20px" }} />;
 };

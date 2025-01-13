@@ -1,7 +1,10 @@
+"use client";
+
 import React, { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "./HeatMap.css"
+import "./HeatMap.css";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../Charts/ui/card.jsx";  // Assuming these Card components are available
 
 const HeatmapMap = ({ geoJsonData, filteredData }) => {
   const mapRef = useRef(null);
@@ -24,38 +27,29 @@ const HeatmapMap = ({ geoJsonData, filteredData }) => {
 
     // Set color based on frequency intervals
     if (frequency === 0) {
-      // 0 Frequency -> White (fully transparent)
       color = `rgba(255, 255, 255, 0)`; // White with 0 opacity
     } else if (frequency <= 20) {
-      // 1-20 Frequency -> Light Yellowish White
       opacity = Math.max(0.2 + frequency * 0.03, 0.2); // Minimum opacity of 0.2
-      color = `rgba(255, 255, 150, ${opacity})`; // Very light yellow
+      color = `rgba(255, 255, 150, ${opacity})`; // Light yellow
     } else if (frequency <= 50) {
-      // 21-50 Frequency -> Light Yellow
       opacity = Math.max(0.3 + frequency * 0.02, 0.3); // Minimum opacity of 0.3
       color = `rgba(255, 255, 0, ${opacity})`; // Light Yellow
     } else if (frequency <= 70) {
-      // 51-70 Frequency -> Medium Yellow
       opacity = Math.max(0.5 + frequency * 0.015, 0.5); // Minimum opacity of 0.5
       color = `rgba(255, 220, 0, ${opacity})`; // Medium Yellow
     } else if (frequency <= 120) {
-      // 71-120 Frequency -> Orange
       opacity = Math.max(0.7 + frequency * 0.01, 0.7); // Minimum opacity of 0.7
       color = `rgba(255, 165, 0, ${opacity})`; // Orange
     } else if (frequency <= 300) {
-      // 121-300 Frequency -> Bright Orange
       opacity = Math.max(0.9 + frequency * 0.005, 0.9); // Minimum opacity of 0.9
       color = `rgba(255, 140, 0, ${opacity})`; // Bright Orange
     } else if (frequency <= 700) {
-      // 301-700 Frequency -> Light Red
       opacity = Math.max(1 - frequency * 0.0025, 0.6); // Minimum opacity of 0.6
       color = `rgba(255, 80, 0, ${opacity})`; // Light Red
     } else if (frequency <= 1500) {
-      // 701-1500 Frequency -> Red
       opacity = Math.max(1 - frequency * 0.0015, 0.7); // Minimum opacity of 0.7
       color = `rgba(255, 0, 0, ${opacity})`; // Intense Red
     } else {
-      // 1501+ Frequency -> Fully Solid Red
       opacity = 1; // Fully opaque red
       color = `rgba(255, 0, 0, ${opacity})`; // Full intensity Red
     }
@@ -71,7 +65,7 @@ const HeatmapMap = ({ geoJsonData, filteredData }) => {
       });
 
       mapRef.current = L.map("map-canvas", {
-        center: [47.6062, -122.3321],
+        center: [47.4, -120.3321],
         zoom: 7,
         layers: [baseLayer],
       });
@@ -130,7 +124,19 @@ const HeatmapMap = ({ geoJsonData, filteredData }) => {
     };
   }, [geoJsonData, filteredData]);
 
-  return <div id="map-canvas" style={{ width: "60%", height: "600px", marginTop: "20px" }} />;
+  return (
+    <Card className="flex flex-col w-full shadow-lg rounded-lg overflow-hidden">
+      <CardHeader className="pb-0 bg-gray-200">
+        <CardTitle className="text-xl font-semibold text-center">Heatmap: County Frequency</CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-1 items-center justify-center pb-0">
+        <div id="map-canvas" style={{ width: "100%", height: "600px" }} />
+      </CardContent>
+      <CardFooter className="text-sm text-center text-muted-foreground">
+        Visual representation of county frequency based on data.
+      </CardFooter>
+    </Card>
+  );
 };
 
 export default HeatmapMap;

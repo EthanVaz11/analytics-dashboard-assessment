@@ -14,3 +14,8 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
   
+  .charts-container > div > div > div > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }

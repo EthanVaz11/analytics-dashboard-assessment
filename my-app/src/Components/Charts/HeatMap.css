@@ -43,4 +43,12 @@
       height: 250px; /* Adjust height for very small screens */
     }
   }
+
+  .heatmap-container > div{
+    width: 60%;
+  }
   
+  .dashboard-content > div {
+    justify-content: center;
+  }
+

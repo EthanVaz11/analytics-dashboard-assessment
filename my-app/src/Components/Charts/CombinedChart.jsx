@@ -2,6 +2,7 @@
 
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Cell, PieChart, Pie, Legend } from "recharts";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "../Charts/ui/card.jsx";  // Assuming these Card components are available
 
 // Generate unique colors for charts
 const generateColors = (numColors) => {
@@ -45,44 +46,54 @@ const CombinedChart = ({ data, selectedMake }) => {
   }));
 
   return (
-    <div className="charts-wrapper">
-      {/* Bar Chart */}
-      <div className="chart-container">
-        <h3>Bar Chart</h3>
-        <BarChart
-          width={500}
-          height={300}
-          data={barChartData}
-          layout="vertical"
-          margin={{ top: 20, right: 30, left: 50, bottom: 5 }}
-        >
-          <YAxis
-            type="category"
-            dataKey="make"
-            tickLine={false}
-            axisLine={false}
-          />
-          <XAxis type="number" />
-          <Tooltip />
-          <Bar
-            dataKey="count"
-            fill={makeColors[0]} // Default color if no color mapping is needed
-            radius={[5, 5, 0, 0]}
+    <div className="charts-wrapper flex flex-col gap-6 md:flex-row justify-between">
+      {/* Bar Chart Card */}
+      <Card className="flex flex-col w-full md:w-[48%] shadow-lg rounded-lg overflow-hidden">
+        <CardHeader className="pb-0 bg-gray-200">
+          <CardTitle className="text-xl font-semibold text-center">Bar Chart: Vehicle Make Count</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-1 items-center justify-center pb-0">
+          <BarChart
+            width={600}  // Larger width for better visual alignment
+            height={350}  // Increased height for more space
+            data={barChartData}
+            layout="vertical"
+            margin={{ top: 20, right: 30, left: 70, bottom: 20 }}  // Adjusted left margin
           >
-            {barChartData.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={entry.color} />
-            ))}
-          </Bar>
-        </BarChart>
-      </div>
+            <YAxis
+              type="category"
+              dataKey="make"
+              tickLine={false}
+              axisLine={false}
+              angle={-45}  // Rotates the labels for better readability
+              textAnchor="end"
+              tick={{ fontSize: 12 }}  // Adjusted font size for better fit
+            />
+            <XAxis type="number" />
+            <Tooltip />
+            <Bar dataKey="count" radius={[5, 5, 0, 0]}>
+              {barChartData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Bar>
+          </BarChart>
+        </CardContent>
+        <CardFooter className="text-sm text-center text-muted-foreground">
+          Vehicle counts by make.
+        </CardFooter>
+      </Card>
 
-      {/* Pie Chart */}
-      {selectedMake && (
-        <div className="chart-container">
-          <h3>Pie Chart - {selectedMake}</h3>
-          <PieChart width={400} height={400}>
+      {/* Pie Chart Card */}
+      <Card className="flex flex-col w-full md:w-[48%] shadow-lg rounded-lg overflow-hidden">
+        <CardHeader className="pb-0 bg-gray-200">
+          <CardTitle className="text-xl font-semibold text-center">
+            Pie Chart: CAFV Eligibility for {selectedMake || 'All Makes'}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-1 items-center justify-center pb-0">
+          <PieChart width={350} height={350}>
             <Pie
-              data={pieChartData}
+              data={pieChartData.length > 0 ? pieChartData : [{ eligibility: 'No Data', count: 1, color: '#888' }]}  // Display default if no data
               dataKey="count"
               nameKey="eligibility"
               cx="50%"
@@ -91,15 +102,20 @@ const CombinedChart = ({ data, selectedMake }) => {
               fill="#8884d8"
               label
             >
-              {pieChartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
+              {pieChartData.length > 0
+                ? pieChartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))
+                : null}
             </Pie>
             <Tooltip />
             <Legend />
           </PieChart>
-        </div>
-      )}
+        </CardContent>
+        <CardFooter className="text-sm text-center text-muted-foreground">
+          CAFV eligibility distribution for the selected make.
+        </CardFooter>
+      </Card>
     </div>
   );
 };

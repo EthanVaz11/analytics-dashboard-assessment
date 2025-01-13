@@ -9,6 +9,7 @@ import Filter from "./Filter/Filter.jsx";
 import LazyLoader from "./LazyLoader/LazyLoader.jsx";
 import "./Dashboard.css";
 import HeatmapMap from "./Charts/HeatMap.jsx";
+// import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -138,14 +139,20 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
+
+<div className="heatmap-wrapper">
+  <div className="heatmap-container">
+    <h3>County Heatmap</h3>
+    <HeatmapMap filteredData={filteredData} geoJsonData={geoJson} />
+  </div>
+</div>
+
+      
       <div className="dashboard-tile">
-        <div className="heatmap-container">
-          <h3>County Heatmap</h3>
-          <HeatmapMap filteredData={filteredData} geoJsonData={geoJson} />
-        </div>
-      </div>
       <h1>Electric Vehicles Dashboard</h1>
       <Filter options={filterOptions} onChange={handleFilterChange} />
+
+      </div>
       <div className="dashboard-tile">
         <SummaryCards
           data={filteredData}
@@ -159,7 +166,7 @@ const Dashboard = () => {
         {/* <SimpleBarChart /> */}
       </div>
 
-      <DataTable data={filteredData} />
+      {/* <Link to="/data-table">Go to Data Table</Link> */}
     </div>
   );
 };

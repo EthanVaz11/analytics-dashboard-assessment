@@ -6,55 +6,65 @@ const Filter = ({ options, onChange }) => {
   const [clean_alternative_fuel_vehicle_cafv_eligibility, setClean_alternative_fuel_vehicle_cafv_eligibility] = useState('');
   const [make, setMake] = useState('');
   const [model, setModel] = useState('');
+  const [filteredModels, setFilteredModels] = useState([]);
+
+  // Update model options when make changes
+  const handleMakeChange = (selectedMake) => {
+    setMake(selectedMake);
+    setModel(''); // Reset model when make changes
+
+    // Find the models for the selected make
+    const selectedMakeObject = options.models.find((item) => item.make === selectedMake);
+    setFilteredModels(selectedMakeObject ? selectedMakeObject.models : []);
+  };
 
   const handleFilter = () => {
     const criteria = { electric_vehicle_type, clean_alternative_fuel_vehicle_cafv_eligibility, make, model };
     onChange(criteria); // Send the selected filter criteria to parent
   };
-  console.log(options, "Filter Options")
 
   return (
     <div className="filter">
+      {/* Dropdown for Electric Vehicle Type */}
+      <select value={electric_vehicle_type} onChange={(e) => setElectric_vehicle_type(e.target.value)}>
+        <option value="">Select Electric Vehicle Type</option>
+        {options.electric_vehicle_types.map((type, index) => (
+          <option key={index} value={type}>
+            {type}
+          </option>
+        ))}
+      </select>
+
+      {/* Dropdown for Alternative Fuel Eligibility */}
+      <select value={clean_alternative_fuel_vehicle_cafv_eligibility} onChange={(e) => setClean_alternative_fuel_vehicle_cafv_eligibility(e.target.value)}>
+        <option value="">Select Alternative Fuel Eligibility</option>
+        {options.clean_alternative_fuel_vehicle_cafv_eligibilities.map((eligibility, index) => (
+          <option key={index} value={eligibility}>
+            {eligibility}
+          </option>
+        ))}
+      </select>
+
       {/* Dropdown for Make */}
-      <select value={make} onChange={(e) => setMake(e.target.value)}>
+      <select value={make} onChange={(e) => handleMakeChange(e.target.value)}>
         <option value="">Select Make</option>
-        {options.makes.map((make, index) => (
-          <option key={index} value={make}>
-            {make}
+        {options.makes.map((makeOption, index) => (
+          <option key={index} value={makeOption}>
+            {makeOption}
           </option>
         ))}
       </select>
 
       {/* Dropdown for Model */}
-      <select value={model} onChange={(e) => setModel(e.target.value)}>
+      <select value={model} onChange={(e) => setModel(e.target.value)} disabled={!make}>
         <option value="">Select Model</option>
-        {options.models.map((model, index) => (
-          <option key={index} value={model}>
-            {model}
+        {filteredModels.map((modelOption, index) => (
+          <option key={index} value={modelOption}>
+            {modelOption}
           </option>
         ))}
       </select>
 
-            {/* Dropdown for electric_vehicle_type */}
-        <select value={electric_vehicle_type} onChange={(e) => setElectric_vehicle_type(e.target.value)}>
-        <option value="">Select Electric Vehicle Type</option>
-        {options.electric_vehicle_types.map((electric_vehicle_type, index) => (
-          <option key={index} value={electric_vehicle_type}>
-            {electric_vehicle_type}
-          </option>
-        ))}
-      </select>
-
-            {/* Dropdown for clean_alternative_fuel_vehicle_cafv_eligibility */}
-            <select value={clean_alternative_fuel_vehicle_cafv_eligibility} onChange={(e) => setClean_alternative_fuel_vehicle_cafv_eligibility(e.target.value)}>
-        <option value="">Select Alternative Fuel Eligibility</option>
-        {options.clean_alternative_fuel_vehicle_cafv_eligibilities.map((clean_alternative_fuel_vehicle_cafv_eligibility, index) => (
-          <option key={index} value={clean_alternative_fuel_vehicle_cafv_eligibility}>
-            {clean_alternative_fuel_vehicle_cafv_eligibility}
-          </option>
-        ))}
-      </select>
-      
       <button onClick={handleFilter}>Apply Filter</button>
     </div>
   );

@@ -63,7 +63,25 @@ const Dashboard = () => {
           const electric_vehicle_types	= [...new Set(allData.map((item) => item.electric_vehicle_type))];
           const clean_alternative_fuel_vehicle_cafv_eligibilities = [...new Set(allData.map((item)=> item.clean_alternative_fuel_vehicle_cafv_eligibility))];
           const makes = [...new Set(allData.map((item) => item.make))];
-          const models = [...new Set(allData.map((item) => item.model))];
+
+           // Create make-model mapping
+        const makeModelMap = {};
+        allData.forEach((item) => {
+          if (item.make && item.model) {
+            if (!makeModelMap[item.make]) {
+              makeModelMap[item.make] = new Set();
+            }
+            makeModelMap[item.make].add(item.model);
+          }
+        }); 
+
+        // Flatten make-model map into an array of objects
+        const models = Object.entries(makeModelMap).map(([make, modelsSet]) => ({
+          make,
+          models: [...modelsSet],
+        }));
+
+        console.log("makeModelMap",makeModelMap)
           setFilterOptions({ electric_vehicle_types, clean_alternative_fuel_vehicle_cafv_eligibilities, makes, models });
           setLoading(false);
         },

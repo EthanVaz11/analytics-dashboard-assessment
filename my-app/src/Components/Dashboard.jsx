@@ -18,8 +18,8 @@ const Dashboard = () => {
   const [geoJson, setGeoJson] = useState(null);
 
   const [filterOptions, setFilterOptions] = useState({
-    states: [],
-    cities: [],
+    electric_vehicle_types: [],	
+    clean_alternative_fuel_vehicle_cafv_eligibilities: [],
     makes: [],
     models: [],
   });
@@ -60,13 +60,11 @@ const Dashboard = () => {
 
           setData(processedData);
           setFilteredData(processedData);
-
-          const states = [...new Set(allData.map((item) => item.state))];
-          const cities = [...new Set(allData.map((item) => item.city))];
+          const electric_vehicle_types	= [...new Set(allData.map((item) => item.electric_vehicle_type))];
+          const clean_alternative_fuel_vehicle_cafv_eligibilities = [...new Set(allData.map((item)=> item.clean_alternative_fuel_vehicle_cafv_eligibility))];
           const makes = [...new Set(allData.map((item) => item.make))];
           const models = [...new Set(allData.map((item) => item.model))];
-
-          setFilterOptions({ states, cities, makes, models });
+          setFilterOptions({ electric_vehicle_types, clean_alternative_fuel_vehicle_cafv_eligibilities, makes, models });
           setLoading(false);
         },
         error: (err) => console.error('Error parsing CSV:', err),
@@ -79,8 +77,8 @@ const Dashboard = () => {
   const handleFilterChange = (criteria) => {
     const filtered = data.filter((item) => {
       return (
-        (!criteria.state || item.state === criteria.state) &&
-        (!criteria.city || item.city === criteria.city) &&
+        (!criteria.electric_vehicle_type || item.electric_vehicle_type === criteria.electric_vehicle_type) &&
+        (!criteria.clean_alternative_fuel_vehicle_cafv_eligibility || item.clean_alternative_fuel_vehicle_cafv_eligibility === criteria.clean_alternative_fuel_vehicle_cafv_eligibility) &&
         (!criteria.make || item.make === criteria.make) &&
         (!criteria.model || item.model === criteria.model)
       );

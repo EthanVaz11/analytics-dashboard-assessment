@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "./HeatMap.css"
 
 const HeatmapMap = ({ geoJsonData, filteredData }) => {
   const mapRef = useRef(null);
@@ -129,7 +130,7 @@ const HeatmapMap = ({ geoJsonData, filteredData }) => {
     };
   }, [geoJsonData, filteredData]);
 
-  return <div id="map-canvas" style={{ width: "100%", height: "500px", marginTop: "20px" }} />;
+  return <div id="map-canvas" style={{ width: "60%", height: "800px", marginTop: "20px" }} />;
 };
 
 export default HeatmapMap;

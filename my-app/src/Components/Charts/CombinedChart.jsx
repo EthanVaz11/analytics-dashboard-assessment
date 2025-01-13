@@ -48,7 +48,7 @@ const CombinedChart = ({ data, selectedMake }) => {
   return (
     <div className="charts-wrapper flex flex-col gap-6 md:flex-row justify-between">
       {/* Bar Chart Card */}
-      <Card className="flex flex-col w-full md:w-[48%] shadow-lg rounded-lg overflow-hidden">
+      <Card className="flex flex-col w-full md:w-[48%] shadow-lg rounded-lg overflow-hidden bar-chart-card">
         <CardHeader className="pb-0 bg-gray-200">
           <CardTitle className="text-xl font-semibold text-center">Bar Chart: Vehicle Make Count</CardTitle>
         </CardHeader>
@@ -84,13 +84,13 @@ const CombinedChart = ({ data, selectedMake }) => {
       </Card>
 
       {/* Pie Chart Card */}
-      <Card className="flex flex-col w-full md:w-[48%] shadow-lg rounded-lg overflow-hidden">
+      <Card className="flex flex-col w-full md:w-[48%] shadow-lg rounded-lg overflow-hidden pie-chart-card">
         <CardHeader className="pb-0 bg-gray-200">
           <CardTitle className="text-xl font-semibold text-center">
             Pie Chart: CAFV Eligibility for {selectedMake || 'All Makes'}
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex flex-1 items-center justify-center pb-0">
+        <CardContent className="flex flex-1 items-center justify-center pb-0 pie-chart">
           <PieChart width={350} height={350}>
             <Pie
               data={pieChartData.length > 0 ? pieChartData : [{ eligibility: 'No Data', count: 1, color: '#888' }]}  // Display default if no data

@@ -58,7 +58,7 @@ const SummaryCards = ({ data, totalVehiclez, totalModelz }) => {
   }
 
   return (
-    <div className="flex flex-col gap-6 md:flex-row">
+    <div className="flex flex-col gap-6 md:flex-row gauge-chart">
       {/* Total Vehicles Card */}
       <Card className="flex flex-col">
         <CardHeader className="items-center pb-0">

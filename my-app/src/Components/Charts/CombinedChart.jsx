@@ -79,7 +79,7 @@ const CombinedChart = ({ data, selectedMake }) => {
           </BarChart>
         </CardContent>
         <CardFooter className="text-sm text-center text-muted-foreground">
-          Vehicle counts by make.
+          Total Make 
         </CardFooter>
       </Card>
 

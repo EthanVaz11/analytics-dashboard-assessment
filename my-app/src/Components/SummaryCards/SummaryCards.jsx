@@ -123,14 +123,6 @@ const SummaryCards = ({ data, totalVehiclez, totalModelz }) => {
             </RadialBarChart>
           </ChartContainer>
         </CardContent>
-        <CardFooter className="flex-col gap-2 text-sm">
-          <div className="flex items-center gap-2 font-medium leading-none">
-            Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-          </div>
-          <div className="leading-none text-muted-foreground">
-            Showing total vehicles for the last 6 months
-          </div>
-        </CardFooter>
       </Card>
 
       {/* Unique Models Card */}
@@ -197,14 +189,6 @@ const SummaryCards = ({ data, totalVehiclez, totalModelz }) => {
             </RadialBarChart>
           </ChartContainer>
         </CardContent>
-        <CardFooter className="flex-col gap-2 text-sm">
-          <div className="flex items-center gap-2 font-medium leading-none">
-            Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-          </div>
-          <div className="leading-none text-muted-foreground">
-            Showing unique vehicle models count
-          </div>
-        </CardFooter>
       </Card>
 
       {/* Average Electric Range Card */}
@@ -263,14 +247,6 @@ const SummaryCards = ({ data, totalVehiclez, totalModelz }) => {
             </RadialBarChart>
           </ChartContainer>
         </CardContent>
-        <CardFooter className="flex-col gap-2 text-sm">
-          <div className="flex items-center gap-2 font-medium leading-none">
-            Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-          </div>
-          <div className="leading-none text-muted-foreground">
-            Showing average electric range across vehicles
-          </div>
-        </CardFooter>
       </Card>
     </div>
   )

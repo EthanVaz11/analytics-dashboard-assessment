@@ -44,7 +44,7 @@ const CombinedChart = ({ data, selectedMake }) => {
     ],
   };
 
-  const filteredData = data.filter((item) => item.make === selectedMake);
+  const filteredData = data.filter((item) => item.make );
   const cafvCounts = filteredData.reduce((acc, item) => {
     acc[item.clean_alternative_fuel_vehicle_cafv_eligibility] =
       (acc[item.clean_alternative_fuel_vehicle_cafv_eligibility] || 0) + 1;
@@ -114,22 +114,22 @@ const CombinedChart = ({ data, selectedMake }) => {
   return (
     <div className="charts-wrapper">
       {/* Bar Chart */}
-      {!selectedMake && (
+      {/* {!selectedMake && ( */}
         <div className="chart-container">
           <h3>Bar Chart</h3>
           <Bar data={barChartData} options={barOptions} />
         </div>
-      )}
+      {/* // )} */}
 
       {/* Pie Chart */}
-      {selectedMake && (
+      {/* {selectedMake && ( */}
         <div className="chart-container">
           <h3>Pie Chart - {selectedMake}</h3>
           <div className="pie-chart-container">
             <Pie data={pieChartData} options={pieOptions} />
           </div>
         </div>
-      )}
+      {/* // )} */}
     </div>
   );
 };

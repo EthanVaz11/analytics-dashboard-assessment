@@ -130,7 +130,7 @@ const HeatmapMap = ({ geoJsonData, filteredData }) => {
     };
   }, [geoJsonData, filteredData]);
 
-  return <div id="map-canvas" style={{ width: "60%", height: "800px", marginTop: "20px" }} />;
+  return <div id="map-canvas" style={{ width: "60%", height: "600px", marginTop: "20px" }} />;
 };
 
 export default HeatmapMap;

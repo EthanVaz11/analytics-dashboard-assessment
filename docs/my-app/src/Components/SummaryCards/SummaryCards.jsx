@@ -123,6 +123,11 @@ const SummaryCards = ({ data, totalVehiclez, totalModelz }) => {
             </RadialBarChart>
           </ChartContainer>
         </CardContent>
+        <CardFooter className="flex-col gap-2 text-sm">
+          <div className="leading-none text-muted-foreground">
+          Count Of All Vehicles  Out Of Total
+          </div>
+        </CardFooter>
       </Card>
 
       {/* Unique Models Card */}
@@ -189,6 +194,11 @@ const SummaryCards = ({ data, totalVehiclez, totalModelz }) => {
             </RadialBarChart>
           </ChartContainer>
         </CardContent>
+        <CardFooter className="flex-col gap-2 text-sm">
+          <div className="leading-none text-muted-foreground">
+          Count Of All Unique Modals Out Of Total
+          </div>
+        </CardFooter>
       </Card>
 
       {/* Average Electric Range Card */}
@@ -247,6 +257,11 @@ const SummaryCards = ({ data, totalVehiclez, totalModelz }) => {
             </RadialBarChart>
           </ChartContainer>
         </CardContent>
+        <CardFooter className="flex-col gap-2 text-sm">
+          <div className="leading-none text-muted-foreground">
+          Average Electric Range Across All Vehicles
+          </div>
+        </CardFooter>
       </Card>
     </div>
   )

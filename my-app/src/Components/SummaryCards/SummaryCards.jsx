@@ -17,17 +17,28 @@ import {
   ChartTooltipContent,
 } from "../Charts/ui/chart.jsx"
 
-const SummaryCards = ({ data }) => {
-  const totalVehicles = data.length;
+const SummaryCards = ({ data, totalVehiclez, totalModelz }) => {
+  // Calculate total vehicles dynamically from data
+  const totalVehicles = totalVehiclez;  // This will remain constant as the initial total
+  const currentVehicles = data.length;  // This will change based on filtered data
+  
+  // Calculate unique models dynamically from data
+  const totalModels = totalModelz;
   const uniqueModels = new Set(data.map((item) => item.model)).size;
+  
+  // Calculate max speed dynamically based on data
   const maxSpeed = Math.max(...data.map((item) => item.max_speed || 0));  // Max speed calculation
+  
+  // Calculate average electric range dynamically based on data
   const averageRange =
-    data.reduce((sum, item) => sum + (item.electric_range || 0), 0) / totalVehicles || 0;
+    data.reduce((sum, item) => sum + (item.electric_range || 0), 0) / currentVehicles || 0;
 
   const chartData = [{ 
     name: 'Summary', 
-    total: totalVehicles, 
+    total: currentVehicles, 
+    maxTotal: totalVehicles, // Used for the total vehicles radial chart
     unique: uniqueModels, 
+    maxUnique: totalModels,
     range: averageRange
   }];
 
@@ -44,7 +55,7 @@ const SummaryCards = ({ data }) => {
       label: "Avg. Range",
       color: "hsl(var(--chart-3))",
     },
-  } 
+  }
 
   return (
     <div className="flex flex-col gap-6 md:flex-row">
@@ -79,7 +90,7 @@ const SummaryCards = ({ data }) => {
                             y={(viewBox.cy || 0) - 16}
                             className="fill-foreground text-2xl font-bold"
                           >
-                            {totalVehicles.toLocaleString()}
+                            {currentVehicles.toLocaleString()}
                           </tspan>
                           <tspan
                             x={viewBox.cx}
@@ -100,6 +111,14 @@ const SummaryCards = ({ data }) => {
                 cornerRadius={5}
                 fill="hsl(var(--chart-1))"
                 className="stroke-transparent stroke-2"
+              />
+              {/* Radial bar for total vehicles (constant) */}
+              <RadialBar
+                dataKey="maxTotal"
+                stackId="b"
+                cornerRadius={5}
+                fill="hsl(var(--chart-1))"
+                className="stroke-transparent stroke-2 opacity-50"
               />
             </RadialBarChart>
           </ChartContainer>
@@ -164,8 +183,16 @@ const SummaryCards = ({ data }) => {
                 dataKey="unique"
                 stackId="a"
                 cornerRadius={5}
-                fill="hsl(var(--chart-2))"
+                fill="hsl(var(--chart-1))"
                 className="stroke-transparent stroke-2"
+              />
+              {/* Radial bar for total vehicles (constant) */}
+              <RadialBar
+                dataKey="maxUnique"
+                stackId="b"
+                cornerRadius={5}
+                fill="hsl(var(--chart-1))"
+                className="stroke-transparent stroke-2 opacity-50"
               />
             </RadialBarChart>
           </ChartContainer>

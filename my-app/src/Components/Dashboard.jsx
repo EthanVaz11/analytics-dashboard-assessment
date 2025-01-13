@@ -81,9 +81,8 @@ const Dashboard = () => {
           models: [...modelsSet],
         }));
 
-        console.log("makeModelMap",makeModelMap)
-          setFilterOptions({ electric_vehicle_types, clean_alternative_fuel_vehicle_cafv_eligibilities, makes, models });
-          setLoading(false);
+        setFilterOptions({ electric_vehicle_types, clean_alternative_fuel_vehicle_cafv_eligibilities, makes, models });
+        setLoading(false);
         },
         error: (err) => console.error('Error parsing CSV:', err),
       });
@@ -106,7 +105,11 @@ const Dashboard = () => {
     setSelectedMake(criteria.make || null);
   };
 
-  if (loading) return <LazyLoader />;
+  // Calculate total vehicles and total models
+  const totalVehicles = data.length; // Get total from raw data
+  const totalModels = [...new Set(data.map(item => item.model))].length;
+
+  // if (loading) return <LazyLoader />;
 
   return (
     <div className="dashboard">
@@ -114,7 +117,7 @@ const Dashboard = () => {
       <Filter options={filterOptions} onChange={handleFilterChange} />
       
       <div className="dashboard-content">
-        <SummaryCards data={filteredData} />
+        <SummaryCards data={filteredData} totalVehiclez={totalVehicles} totalModelz={totalModels} />
 
         <div className="heatmap-container">
           <h3>County Heatmap</h3>
@@ -123,6 +126,7 @@ const Dashboard = () => {
 
         <div className="charts-container">
           <CombinedChart data={filteredData} selectedMake={selectedMake} />
+          {/* <SimpleBarChart /> */}
         </div>
 
         <DataTable data={filteredData} />
